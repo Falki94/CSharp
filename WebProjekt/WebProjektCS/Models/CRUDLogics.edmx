@@ -1,0 +1,629 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="SklepModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Adres">
+          <Key>
+            <PropertyRef Name="id_adres" />
+          </Key>
+          <Property Name="id_adres" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ulica" Type="varchar" MaxLength="24" Nullable="false" />
+          <Property Name="numer" Type="varchar" MaxLength="8" Nullable="false" />
+          <Property Name="miasto" Type="varchar" MaxLength="24" Nullable="false" />
+          <Property Name="kod" Type="char" MaxLength="6" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Dostawa">
+          <Key>
+            <PropertyRef Name="id_dostawa" />
+          </Key>
+          <Property Name="id_dostawa" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id_klient" Type="int" Nullable="false" />
+          <Property Name="id_adres_dostawy" Type="int" Nullable="false" />
+          <Property Name="id_zamowienie" Type="int" Nullable="false" />
+          <Property Name="data_dostawy" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Klient">
+          <Key>
+            <PropertyRef Name="id_klient" />
+          </Key>
+          <Property Name="id_klient" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="imie" Type="varchar" MaxLength="15" Nullable="false" />
+          <Property Name="nazwisko" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="firma" Type="varchar" MaxLength="40" />
+          <Property Name="nip" Type="char" MaxLength="11" />
+          <Property Name="id_kontakt" Type="int" Nullable="false" />
+          <Property Name="id_adres" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Kontakt">
+          <Key>
+            <PropertyRef Name="id_kontakt" />
+          </Key>
+          <Property Name="id_kontakt" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="facebook" Type="varchar" MaxLength="50" />
+          <Property Name="email" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="telefon" Type="varchar" MaxLength="24" Nullable="false" />
+          <Property Name="skype" Type="varchar" MaxLength="30" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Pracownik">
+          <Key>
+            <PropertyRef Name="id_pracownik" />
+          </Key>
+          <Property Name="id_pracownik" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id_kontakt" Type="int" Nullable="false" />
+          <Property Name="id_adres" Type="int" Nullable="false" />
+          <Property Name="imie" Type="varchar" MaxLength="15" Nullable="false" />
+          <Property Name="nazwisko" Type="varchar" MaxLength="35" Nullable="false" />
+          <Property Name="data_uro" Type="datetime" Nullable="false" />
+          <Property Name="data_zatr" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Produkt">
+          <Key>
+            <PropertyRef Name="id_produkt" />
+          </Key>
+          <Property Name="id_produkt" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nazwa" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="cena" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="opis" Type="varchar" MaxLength="5000" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Zamowienie">
+          <Key>
+            <PropertyRef Name="id_zamowienie" />
+          </Key>
+          <Property Name="id_zamowienie" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id_produkt" Type="int" Nullable="false" />
+          <Property Name="id_klient" Type="int" Nullable="false" />
+          <Property Name="id_pracownik" Type="int" Nullable="false" />
+          <Property Name="data_zamowienia" Type="datetime" Nullable="false" />
+          <Property Name="rabat" Type="decimal" Precision="4" Scale="2" />
+        </EntityType>
+        <Association Name="FK_Dostawa_Adres">
+          <End Role="Adres" Type="Self.Adres" Multiplicity="1" />
+          <End Role="Dostawa" Type="Self.Dostawa" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Adres">
+              <PropertyRef Name="id_adres" />
+            </Principal>
+            <Dependent Role="Dostawa">
+              <PropertyRef Name="id_adres_dostawy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Dostawa_Klient">
+          <End Role="Klient" Type="Self.Klient" Multiplicity="1" />
+          <End Role="Dostawa" Type="Self.Dostawa" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Klient">
+              <PropertyRef Name="id_klient" />
+            </Principal>
+            <Dependent Role="Dostawa">
+              <PropertyRef Name="id_klient" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Dostawa_Zamowienia">
+          <End Role="Zamowienie" Type="Self.Zamowienie" Multiplicity="1" />
+          <End Role="Dostawa" Type="Self.Dostawa" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Zamowienie">
+              <PropertyRef Name="id_zamowienie" />
+            </Principal>
+            <Dependent Role="Dostawa">
+              <PropertyRef Name="id_zamowienie" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Klient_Adres">
+          <End Role="Adres" Type="Self.Adres" Multiplicity="1" />
+          <End Role="Klient" Type="Self.Klient" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Adres">
+              <PropertyRef Name="id_adres" />
+            </Principal>
+            <Dependent Role="Klient">
+              <PropertyRef Name="id_adres" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Klient_Kontakt">
+          <End Role="Kontakt" Type="Self.Kontakt" Multiplicity="1" />
+          <End Role="Klient" Type="Self.Klient" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Kontakt">
+              <PropertyRef Name="id_kontakt" />
+            </Principal>
+            <Dependent Role="Klient">
+              <PropertyRef Name="id_kontakt" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Pracownik_Adres">
+          <End Role="Adres" Type="Self.Adres" Multiplicity="1" />
+          <End Role="Pracownik" Type="Self.Pracownik" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Adres">
+              <PropertyRef Name="id_adres" />
+            </Principal>
+            <Dependent Role="Pracownik">
+              <PropertyRef Name="id_adres" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Pracownik_Kontakt">
+          <End Role="Kontakt" Type="Self.Kontakt" Multiplicity="1" />
+          <End Role="Pracownik" Type="Self.Pracownik" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Kontakt">
+              <PropertyRef Name="id_kontakt" />
+            </Principal>
+            <Dependent Role="Pracownik">
+              <PropertyRef Name="id_kontakt" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Zamowienia_Klient">
+          <End Role="Klient" Type="Self.Klient" Multiplicity="1" />
+          <End Role="Zamowienie" Type="Self.Zamowienie" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Klient">
+              <PropertyRef Name="id_klient" />
+            </Principal>
+            <Dependent Role="Zamowienie">
+              <PropertyRef Name="id_klient" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Zamowienia_Pracownik">
+          <End Role="Pracownik" Type="Self.Pracownik" Multiplicity="1" />
+          <End Role="Zamowienie" Type="Self.Zamowienie" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Pracownik">
+              <PropertyRef Name="id_pracownik" />
+            </Principal>
+            <Dependent Role="Zamowienie">
+              <PropertyRef Name="id_pracownik" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Zamowienia_Produkt">
+          <End Role="Produkt" Type="Self.Produkt" Multiplicity="1" />
+          <End Role="Zamowienie" Type="Self.Zamowienie" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Produkt">
+              <PropertyRef Name="id_produkt" />
+            </Principal>
+            <Dependent Role="Zamowienie">
+              <PropertyRef Name="id_produkt" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="SklepModelStoreContainer">
+          <EntitySet Name="Adres" EntityType="Self.Adres" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Dostawa" EntityType="Self.Dostawa" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Klient" EntityType="Self.Klient" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Kontakt" EntityType="Self.Kontakt" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Pracownik" EntityType="Self.Pracownik" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Produkt" EntityType="Self.Produkt" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Zamowienie" EntityType="Self.Zamowienie" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Dostawa_Adres" Association="Self.FK_Dostawa_Adres">
+            <End Role="Adres" EntitySet="Adres" />
+            <End Role="Dostawa" EntitySet="Dostawa" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Dostawa_Klient" Association="Self.FK_Dostawa_Klient">
+            <End Role="Klient" EntitySet="Klient" />
+            <End Role="Dostawa" EntitySet="Dostawa" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Dostawa_Zamowienia" Association="Self.FK_Dostawa_Zamowienia">
+            <End Role="Zamowienie" EntitySet="Zamowienie" />
+            <End Role="Dostawa" EntitySet="Dostawa" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Klient_Adres" Association="Self.FK_Klient_Adres">
+            <End Role="Adres" EntitySet="Adres" />
+            <End Role="Klient" EntitySet="Klient" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Klient_Kontakt" Association="Self.FK_Klient_Kontakt">
+            <End Role="Kontakt" EntitySet="Kontakt" />
+            <End Role="Klient" EntitySet="Klient" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Pracownik_Adres" Association="Self.FK_Pracownik_Adres">
+            <End Role="Adres" EntitySet="Adres" />
+            <End Role="Pracownik" EntitySet="Pracownik" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Pracownik_Kontakt" Association="Self.FK_Pracownik_Kontakt">
+            <End Role="Kontakt" EntitySet="Kontakt" />
+            <End Role="Pracownik" EntitySet="Pracownik" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Zamowienia_Klient" Association="Self.FK_Zamowienia_Klient">
+            <End Role="Klient" EntitySet="Klient" />
+            <End Role="Zamowienie" EntitySet="Zamowienie" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Zamowienia_Pracownik" Association="Self.FK_Zamowienia_Pracownik">
+            <End Role="Pracownik" EntitySet="Pracownik" />
+            <End Role="Zamowienie" EntitySet="Zamowienie" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Zamowienia_Produkt" Association="Self.FK_Zamowienia_Produkt">
+            <End Role="Produkt" EntitySet="Produkt" />
+            <End Role="Zamowienie" EntitySet="Zamowienie" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="SklepModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Adre">
+          <Key>
+            <PropertyRef Name="id_adres" />
+          </Key>
+          <Property Name="id_adres" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ulica" Type="String" MaxLength="24" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="numer" Type="String" MaxLength="8" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="miasto" Type="String" MaxLength="24" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="kod" Type="String" MaxLength="6" FixedLength="true" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Dostawas" Relationship="Self.FK_Dostawa_Adres" FromRole="Adres" ToRole="Dostawa" />
+          <NavigationProperty Name="Klients" Relationship="Self.FK_Klient_Adres" FromRole="Adres" ToRole="Klient" />
+          <NavigationProperty Name="Pracowniks" Relationship="Self.FK_Pracownik_Adres" FromRole="Adres" ToRole="Pracownik" />
+        </EntityType>
+        <EntityType Name="Dostawa">
+          <Key>
+            <PropertyRef Name="id_dostawa" />
+          </Key>
+          <Property Name="id_dostawa" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id_klient" Type="Int32" Nullable="false" />
+          <Property Name="id_adres_dostawy" Type="Int32" Nullable="false" />
+          <Property Name="id_zamowienie" Type="Int32" Nullable="false" />
+          <Property Name="data_dostawy" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Adre" Relationship="Self.FK_Dostawa_Adres" FromRole="Dostawa" ToRole="Adres" />
+          <NavigationProperty Name="Klient" Relationship="Self.FK_Dostawa_Klient" FromRole="Dostawa" ToRole="Klient" />
+          <NavigationProperty Name="Zamowienie" Relationship="Self.FK_Dostawa_Zamowienia" FromRole="Dostawa" ToRole="Zamowienie" />
+        </EntityType>
+        <EntityType Name="Klient">
+          <Key>
+            <PropertyRef Name="id_klient" />
+          </Key>
+          <Property Name="id_klient" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="imie" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="nazwisko" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="firma" Type="String" MaxLength="40" FixedLength="false" Unicode="false" />
+          <Property Name="nip" Type="String" MaxLength="11" FixedLength="true" Unicode="false" />
+          <Property Name="id_kontakt" Type="Int32" Nullable="false" />
+          <Property Name="id_adres" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Adre" Relationship="Self.FK_Klient_Adres" FromRole="Klient" ToRole="Adres" />
+          <NavigationProperty Name="Dostawas" Relationship="Self.FK_Dostawa_Klient" FromRole="Klient" ToRole="Dostawa" />
+          <NavigationProperty Name="Kontakt" Relationship="Self.FK_Klient_Kontakt" FromRole="Klient" ToRole="Kontakt" />
+          <NavigationProperty Name="Zamowienies" Relationship="Self.FK_Zamowienia_Klient" FromRole="Klient" ToRole="Zamowienie" />
+        </EntityType>
+        <EntityType Name="Kontakt">
+          <Key>
+            <PropertyRef Name="id_kontakt" />
+          </Key>
+          <Property Name="id_kontakt" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="facebook" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="telefon" Type="String" MaxLength="24" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="skype" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Klients" Relationship="Self.FK_Klient_Kontakt" FromRole="Kontakt" ToRole="Klient" />
+          <NavigationProperty Name="Pracowniks" Relationship="Self.FK_Pracownik_Kontakt" FromRole="Kontakt" ToRole="Pracownik" />
+        </EntityType>
+        <EntityType Name="Pracownik">
+          <Key>
+            <PropertyRef Name="id_pracownik" />
+          </Key>
+          <Property Name="id_pracownik" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id_kontakt" Type="Int32" Nullable="false" />
+          <Property Name="id_adres" Type="Int32" Nullable="false" />
+          <Property Name="imie" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="nazwisko" Type="String" MaxLength="35" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="data_uro" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="data_zatr" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Adre" Relationship="Self.FK_Pracownik_Adres" FromRole="Pracownik" ToRole="Adres" />
+          <NavigationProperty Name="Kontakt" Relationship="Self.FK_Pracownik_Kontakt" FromRole="Pracownik" ToRole="Kontakt" />
+          <NavigationProperty Name="Zamowienies" Relationship="Self.FK_Zamowienia_Pracownik" FromRole="Pracownik" ToRole="Zamowienie" />
+        </EntityType>
+        <EntityType Name="Produkt">
+          <Key>
+            <PropertyRef Name="id_produkt" />
+          </Key>
+          <Property Name="id_produkt" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nazwa" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="cena" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="opis" Type="String" MaxLength="5000" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Zamowienies" Relationship="Self.FK_Zamowienia_Produkt" FromRole="Produkt" ToRole="Zamowienie" />
+        </EntityType>
+        <EntityType Name="Zamowienie">
+          <Key>
+            <PropertyRef Name="id_zamowienie" />
+          </Key>
+          <Property Name="id_zamowienie" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id_produkt" Type="Int32" Nullable="false" />
+          <Property Name="id_klient" Type="Int32" Nullable="false" />
+          <Property Name="id_pracownik" Type="Int32" Nullable="false" />
+          <Property Name="data_zamowienia" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="rabat" Type="Decimal" Precision="4" Scale="2" />
+          <NavigationProperty Name="Dostawas" Relationship="Self.FK_Dostawa_Zamowienia" FromRole="Zamowienie" ToRole="Dostawa" />
+          <NavigationProperty Name="Klient" Relationship="Self.FK_Zamowienia_Klient" FromRole="Zamowienie" ToRole="Klient" />
+          <NavigationProperty Name="Pracownik" Relationship="Self.FK_Zamowienia_Pracownik" FromRole="Zamowienie" ToRole="Pracownik" />
+          <NavigationProperty Name="Produkt" Relationship="Self.FK_Zamowienia_Produkt" FromRole="Zamowienie" ToRole="Produkt" />
+        </EntityType>
+        <Association Name="FK_Dostawa_Adres">
+          <End Role="Adres" Type="Self.Adre" Multiplicity="1" />
+          <End Role="Dostawa" Type="Self.Dostawa" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Adres">
+              <PropertyRef Name="id_adres" />
+            </Principal>
+            <Dependent Role="Dostawa">
+              <PropertyRef Name="id_adres_dostawy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Klient_Adres">
+          <End Role="Adres" Type="Self.Adre" Multiplicity="1" />
+          <End Role="Klient" Type="Self.Klient" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Adres">
+              <PropertyRef Name="id_adres" />
+            </Principal>
+            <Dependent Role="Klient">
+              <PropertyRef Name="id_adres" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Pracownik_Adres">
+          <End Role="Adres" Type="Self.Adre" Multiplicity="1" />
+          <End Role="Pracownik" Type="Self.Pracownik" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Adres">
+              <PropertyRef Name="id_adres" />
+            </Principal>
+            <Dependent Role="Pracownik">
+              <PropertyRef Name="id_adres" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Dostawa_Klient">
+          <End Role="Klient" Type="Self.Klient" Multiplicity="1" />
+          <End Role="Dostawa" Type="Self.Dostawa" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Klient">
+              <PropertyRef Name="id_klient" />
+            </Principal>
+            <Dependent Role="Dostawa">
+              <PropertyRef Name="id_klient" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Dostawa_Zamowienia">
+          <End Role="Zamowienie" Type="Self.Zamowienie" Multiplicity="1" />
+          <End Role="Dostawa" Type="Self.Dostawa" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Zamowienie">
+              <PropertyRef Name="id_zamowienie" />
+            </Principal>
+            <Dependent Role="Dostawa">
+              <PropertyRef Name="id_zamowienie" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Klient_Kontakt">
+          <End Role="Kontakt" Type="Self.Kontakt" Multiplicity="1" />
+          <End Role="Klient" Type="Self.Klient" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Kontakt">
+              <PropertyRef Name="id_kontakt" />
+            </Principal>
+            <Dependent Role="Klient">
+              <PropertyRef Name="id_kontakt" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Zamowienia_Klient">
+          <End Role="Klient" Type="Self.Klient" Multiplicity="1" />
+          <End Role="Zamowienie" Type="Self.Zamowienie" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Klient">
+              <PropertyRef Name="id_klient" />
+            </Principal>
+            <Dependent Role="Zamowienie">
+              <PropertyRef Name="id_klient" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Pracownik_Kontakt">
+          <End Role="Kontakt" Type="Self.Kontakt" Multiplicity="1" />
+          <End Role="Pracownik" Type="Self.Pracownik" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Kontakt">
+              <PropertyRef Name="id_kontakt" />
+            </Principal>
+            <Dependent Role="Pracownik">
+              <PropertyRef Name="id_kontakt" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Zamowienia_Pracownik">
+          <End Role="Pracownik" Type="Self.Pracownik" Multiplicity="1" />
+          <End Role="Zamowienie" Type="Self.Zamowienie" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Pracownik">
+              <PropertyRef Name="id_pracownik" />
+            </Principal>
+            <Dependent Role="Zamowienie">
+              <PropertyRef Name="id_pracownik" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Zamowienia_Produkt">
+          <End Role="Produkt" Type="Self.Produkt" Multiplicity="1" />
+          <End Role="Zamowienie" Type="Self.Zamowienie" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Produkt">
+              <PropertyRef Name="id_produkt" />
+            </Principal>
+            <Dependent Role="Zamowienie">
+              <PropertyRef Name="id_produkt" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="SklepEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Adres" EntityType="Self.Adre" />
+          <EntitySet Name="Dostawas" EntityType="Self.Dostawa" />
+          <EntitySet Name="Klients" EntityType="Self.Klient" />
+          <EntitySet Name="Kontakts" EntityType="Self.Kontakt" />
+          <EntitySet Name="Pracowniks" EntityType="Self.Pracownik" />
+          <EntitySet Name="Produkts" EntityType="Self.Produkt" />
+          <EntitySet Name="Zamowienies" EntityType="Self.Zamowienie" />
+          <AssociationSet Name="FK_Dostawa_Adres" Association="Self.FK_Dostawa_Adres">
+            <End Role="Adres" EntitySet="Adres" />
+            <End Role="Dostawa" EntitySet="Dostawas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Klient_Adres" Association="Self.FK_Klient_Adres">
+            <End Role="Adres" EntitySet="Adres" />
+            <End Role="Klient" EntitySet="Klients" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Pracownik_Adres" Association="Self.FK_Pracownik_Adres">
+            <End Role="Adres" EntitySet="Adres" />
+            <End Role="Pracownik" EntitySet="Pracowniks" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Dostawa_Klient" Association="Self.FK_Dostawa_Klient">
+            <End Role="Klient" EntitySet="Klients" />
+            <End Role="Dostawa" EntitySet="Dostawas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Dostawa_Zamowienia" Association="Self.FK_Dostawa_Zamowienia">
+            <End Role="Zamowienie" EntitySet="Zamowienies" />
+            <End Role="Dostawa" EntitySet="Dostawas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Klient_Kontakt" Association="Self.FK_Klient_Kontakt">
+            <End Role="Kontakt" EntitySet="Kontakts" />
+            <End Role="Klient" EntitySet="Klients" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Zamowienia_Klient" Association="Self.FK_Zamowienia_Klient">
+            <End Role="Klient" EntitySet="Klients" />
+            <End Role="Zamowienie" EntitySet="Zamowienies" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Pracownik_Kontakt" Association="Self.FK_Pracownik_Kontakt">
+            <End Role="Kontakt" EntitySet="Kontakts" />
+            <End Role="Pracownik" EntitySet="Pracowniks" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Zamowienia_Pracownik" Association="Self.FK_Zamowienia_Pracownik">
+            <End Role="Pracownik" EntitySet="Pracowniks" />
+            <End Role="Zamowienie" EntitySet="Zamowienies" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Zamowienia_Produkt" Association="Self.FK_Zamowienia_Produkt">
+            <End Role="Produkt" EntitySet="Produkts" />
+            <End Role="Zamowienie" EntitySet="Zamowienies" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="SklepModelStoreContainer" CdmEntityContainer="SklepEntities">
+          <EntitySetMapping Name="Adres">
+            <EntityTypeMapping TypeName="SklepModel.Adre">
+              <MappingFragment StoreEntitySet="Adres">
+                <ScalarProperty Name="id_adres" ColumnName="id_adres" />
+                <ScalarProperty Name="ulica" ColumnName="ulica" />
+                <ScalarProperty Name="numer" ColumnName="numer" />
+                <ScalarProperty Name="miasto" ColumnName="miasto" />
+                <ScalarProperty Name="kod" ColumnName="kod" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Dostawas">
+            <EntityTypeMapping TypeName="SklepModel.Dostawa">
+              <MappingFragment StoreEntitySet="Dostawa">
+                <ScalarProperty Name="id_dostawa" ColumnName="id_dostawa" />
+                <ScalarProperty Name="id_klient" ColumnName="id_klient" />
+                <ScalarProperty Name="id_adres_dostawy" ColumnName="id_adres_dostawy" />
+                <ScalarProperty Name="id_zamowienie" ColumnName="id_zamowienie" />
+                <ScalarProperty Name="data_dostawy" ColumnName="data_dostawy" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Klients">
+            <EntityTypeMapping TypeName="SklepModel.Klient">
+              <MappingFragment StoreEntitySet="Klient">
+                <ScalarProperty Name="id_klient" ColumnName="id_klient" />
+                <ScalarProperty Name="imie" ColumnName="imie" />
+                <ScalarProperty Name="nazwisko" ColumnName="nazwisko" />
+                <ScalarProperty Name="firma" ColumnName="firma" />
+                <ScalarProperty Name="nip" ColumnName="nip" />
+                <ScalarProperty Name="id_kontakt" ColumnName="id_kontakt" />
+                <ScalarProperty Name="id_adres" ColumnName="id_adres" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Kontakts">
+            <EntityTypeMapping TypeName="SklepModel.Kontakt">
+              <MappingFragment StoreEntitySet="Kontakt">
+                <ScalarProperty Name="id_kontakt" ColumnName="id_kontakt" />
+                <ScalarProperty Name="facebook" ColumnName="facebook" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="telefon" ColumnName="telefon" />
+                <ScalarProperty Name="skype" ColumnName="skype" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Pracowniks">
+            <EntityTypeMapping TypeName="SklepModel.Pracownik">
+              <MappingFragment StoreEntitySet="Pracownik">
+                <ScalarProperty Name="id_pracownik" ColumnName="id_pracownik" />
+                <ScalarProperty Name="id_kontakt" ColumnName="id_kontakt" />
+                <ScalarProperty Name="id_adres" ColumnName="id_adres" />
+                <ScalarProperty Name="imie" ColumnName="imie" />
+                <ScalarProperty Name="nazwisko" ColumnName="nazwisko" />
+                <ScalarProperty Name="data_uro" ColumnName="data_uro" />
+                <ScalarProperty Name="data_zatr" ColumnName="data_zatr" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Produkts">
+            <EntityTypeMapping TypeName="SklepModel.Produkt">
+              <MappingFragment StoreEntitySet="Produkt">
+                <ScalarProperty Name="id_produkt" ColumnName="id_produkt" />
+                <ScalarProperty Name="nazwa" ColumnName="nazwa" />
+                <ScalarProperty Name="cena" ColumnName="cena" />
+                <ScalarProperty Name="opis" ColumnName="opis" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Zamowienies">
+            <EntityTypeMapping TypeName="SklepModel.Zamowienie">
+              <MappingFragment StoreEntitySet="Zamowienie">
+                <ScalarProperty Name="id_zamowienie" ColumnName="id_zamowienie" />
+                <ScalarProperty Name="id_produkt" ColumnName="id_produkt" />
+                <ScalarProperty Name="id_klient" ColumnName="id_klient" />
+                <ScalarProperty Name="id_pracownik" ColumnName="id_pracownik" />
+                <ScalarProperty Name="data_zamowienia" ColumnName="data_zamowienia" />
+                <ScalarProperty Name="rabat" ColumnName="rabat" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

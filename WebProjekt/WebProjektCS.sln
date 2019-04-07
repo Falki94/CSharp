@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.136
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebProjektCS", "WebProjektCS\WebProjektCS.csproj", "{097977CF-FDE1-47AC-9779-4F080710D80B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebProjektCSClient", "WebProjektCSClient\WebProjektCSClient.csproj", "{AC0272CC-9C18-4CFE-B502-F7215F37337E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{097977CF-FDE1-47AC-9779-4F080710D80B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{097977CF-FDE1-47AC-9779-4F080710D80B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{097977CF-FDE1-47AC-9779-4F080710D80B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{097977CF-FDE1-47AC-9779-4F080710D80B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AC0272CC-9C18-4CFE-B502-F7215F37337E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC0272CC-9C18-4CFE-B502-F7215F37337E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AC0272CC-9C18-4CFE-B502-F7215F37337E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AC0272CC-9C18-4CFE-B502-F7215F37337E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F9A10ABA-2A1B-435A-BE8A-A24D306C84C2}
+	EndGlobalSection
+EndGlobal
